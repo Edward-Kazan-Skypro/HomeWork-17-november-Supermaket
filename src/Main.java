@@ -5,7 +5,6 @@ public class Main {
 
     static Queue<String> kassa_1 = new LinkedList<>();
     static Queue<String> kassa_2 = new LinkedList<>();
-
     static Queue<String> kassa_3 = new LinkedList<>();
     static LinkedList<String> buyersList_1 = new LinkedList<>();
     static LinkedList<String> buyersList_2 = new LinkedList<>();
