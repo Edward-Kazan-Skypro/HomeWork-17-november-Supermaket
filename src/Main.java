@@ -27,41 +27,49 @@ public class Main {
 
         String newBuyer_1 = "Ivan";
 
-        addToSmallQueue(kassa_1, kassa_2, newBuyer_1);
+        addToSmallQueue(newBuyer_1);
 
         String newBuyer_2 = "Mike";
 
-        addToSmallQueue(kassa_1, kassa_2, newBuyer_2);
+        addToSmallQueue(newBuyer_2);
 
         String newBuyer_3 = "Linda";
 
-        addToSmallQueue(kassa_1, kassa_2, newBuyer_3);
+        addToSmallQueue(newBuyer_3);
 
         String newBuyer_4 = "Frank";
 
-        addToSmallQueue(kassa_1, kassa_2, newBuyer_4);
+        addToSmallQueue(newBuyer_4);
+
+        String newBuyer_5 = "Fiona";
+
+        addToSmallQueue(newBuyer_5);
     }
 
-    public static void addToSmallQueue(Queue<String> kassa_1, Queue<String> kassa_2, String newBuyer) {
+    public static void addToSmallQueue(String newBuyer) {
+        System.out.println("Состояние очередей при появлении очередного покупателя:");
         System.out.println("kassa_1.size() = " + kassa_1.size());
         System.out.println("kassa_2.size() = " + kassa_2.size());
-        System.out.println("kassa_3.size() = " + kassa_3.size());
+        System.out.print("kassa_3.size() = " + kassa_3.size());
+        if (kassa_3.size() == 0) {
+            System.out.println(" - касса №3 временно закрыта");
+        }
         System.out.println("Покупатель " + newBuyer);
 
         if (kassa_1.size() == 5 && kassa_2.size() == 5) {
-            if (kassa_3.size() == 0) {
-                System.out.println("Кассир вызывает Галю, которая открыла дополнительную кассу");
-            }
+            System.out.println("Кассир вызывает Галю, которая открыла дополнительную кассу (касса №3)");
         }
 
-        if (kassa_1.size() < 5 && kassa_1.size() < kassa_2.size()) {
+        if (kassa_1.size() < 5 && kassa_1.size() <= kassa_2.size()) {
             System.out.println(newBuyer + " выбрал кассу №1");
             kassa_1.add(newBuyer);
+            System.out.println("------------------------------------------------------------");
             return;
         }
-        if (kassa_2.size() < 5 && kassa_2.size() < kassa_1.size()) {
+        if (kassa_2.size() < 5 && kassa_2.size() <= kassa_1.size()) {
             System.out.println(newBuyer + " выбрал кассу №2");
             kassa_2.add(newBuyer);
+            System.out.println("------------------------------------------------------------");
             return;
         }
 
@@ -69,5 +77,13 @@ public class Main {
             System.out.println(newBuyer + " выбрал кассу №3");
             kassa_3.add(newBuyer);
         }
+        //Новый человек дошел до кассы - первый в каждой очереди наверное уже уходит?
+        //Значит если пришел новый и неважно куда он встал,
+        //то первые в каждой очереди уходят.
+        kassa_1.poll();
+        kassa_2.poll();
+        kassa_3.poll();
+
+        System.out.println("------------------------------------------------------------");
     }
 }
