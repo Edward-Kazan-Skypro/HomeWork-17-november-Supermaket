@@ -1,89 +1,90 @@
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Queue;
 
 public class Main {
-
-    static Queue<String> kassa_1 = new LinkedList<>();
-    static Queue<String> kassa_2 = new LinkedList<>();
-    static Queue<String> kassa_3 = new LinkedList<>();
-    static LinkedList<String> buyersList_1 = new LinkedList<>();
-    static LinkedList<String> buyersList_2 = new LinkedList<>();
-
+    private static final List<String> buyers = List.of(
+            "Tom",
+            "Eva",
+            "Adam",
+            "Ron",
+            "Felix",
+            "Sam",
+            "Anna",
+            "Derek",
+            "Don Carleone",
+            "Bobby");
 
     public static void main(String[] args) {
-        buyersList_1.add("Tom");
-        buyersList_1.add("Eva");
-        buyersList_1.add("Adam");
-        buyersList_1.add("Ron");
-        buyersList_1.add("Felix");
+        Queue<String> queue_1 = new ArrayDeque<>(5);
+        Queue<String> queue_2 = new ArrayDeque<>(5);
+        addRandomBuyer(queue_1);
+        addRandomBuyer(queue_2);
+        System.out.println("Первая очередь: " + queue_1);
+        System.out.println("Вторая очередь: " + queue_2);
+        System.out.println();
 
-        buyersList_2.add("Sam");
-        buyersList_2.add("Anna");
-        buyersList_2.add("Derek");
-        buyersList_2.add("Don Carleone");
+        add("Bella", queue_1, queue_2);
+        System.out.println("Первая очередь: " + queue_1);
+        System.out.println("Вторая очередь: " + queue_2);
+        System.out.println();
 
-        kassa_1 = buyersList_1;
-        kassa_2 = buyersList_2;
-
-        String newBuyer_1 = "Ivan";
-
-        addToSmallQueue(newBuyer_1);
-
-        String newBuyer_2 = "Mike";
-
-        addToSmallQueue(newBuyer_2);
-
-        String newBuyer_3 = "Linda";
-
-        addToSmallQueue(newBuyer_3);
-
-        String newBuyer_4 = "Frank";
-
-        addToSmallQueue(newBuyer_4);
-
-        String newBuyer_5 = "Fiona";
-
-        addToSmallQueue(newBuyer_5);
+        removeBuyer(queue_1, queue_2);
+        System.out.println("Первая очередь: " + queue_1);
+        System.out.println("Вторая очередь: " + queue_2);
     }
 
-    public static void addToSmallQueue(String newBuyer) {
-        System.out.println("Состояние очередей при появлении очередного покупателя:");
-        System.out.println("kassa_1.size() = " + kassa_1.size());
-        System.out.println("kassa_2.size() = " + kassa_2.size());
-        System.out.print("kassa_3.size() = " + kassa_3.size());
-        if (kassa_3.size() == 0) {
-            System.out.println(" - касса №3 временно закрыта");
-        }
-        System.out.println("Покупатель " + newBuyer);
-
-        if (kassa_1.size() == 5 && kassa_2.size() == 5) {
-            System.out.println("Кассир вызывает Галю, которая открыла дополнительную кассу (касса №3)");
-        }
-
-        if (kassa_1.size() < 5 && kassa_1.size() <= kassa_2.size()) {
-            System.out.println(newBuyer + " выбрал кассу №1");
-            kassa_1.add(newBuyer);
-            System.out.println("------------------------------------------------------------");
+    private static void add(String name, Queue<String> queue_1, Queue<String> queue_2) {
+        if (queue_1.size() == 5 && queue_2.size() == 5) {
+            System.out.println("Сотрудник супермаркета вызывает Галю, которая может открыть дополнительную кассу");
             return;
         }
-        if (kassa_2.size() < 5 && kassa_2.size() <= kassa_1.size()) {
-            System.out.println(newBuyer + " выбрал кассу №2");
-            kassa_2.add(newBuyer);
-            System.out.println("------------------------------------------------------------");
-            return;
+        if (queue_1.size() < queue_2.size()) {
+            System.out.println("Покупатель " + name + " встал в первую очередь.");
+            queue_1.offer(name);
         }
-
-        if (kassa_3.size() < 5 && (kassa_3.size() < kassa_1.size() || kassa_3.size() < kassa_2.size())) {
-            System.out.println(newBuyer + " выбрал кассу №3");
-            kassa_3.add(newBuyer);
+        if (queue_2.size() < queue_1.size()) {
+            System.out.println("Покупатель " + name + " встал во вторую очередь.");
+            queue_2.offer(name);
         }
-        //Новый человек дошел до кассы - первый в каждой очереди наверное уже уходит?
-        //Значит если пришел новый и неважно куда он встал,
-        //то первые в каждой очереди уходят.
-        kassa_1.poll();
-        kassa_2.poll();
-        kassa_3.poll();
+        //Здесь хотел смоделировать выбор из двух равных очередей
+        //Если обе очереди одинаковы, то покупатель выбирает любую случайным образом
+        if (queue_1.size() == queue_2.size()) {
+            int selectRandomQueue = 1 + (int) (Math.random() * 2);
+            switch (selectRandomQueue) {
+                case 1:
+                    queue_1.offer(name);
+                    System.out.println("Покупатель " + name + " встал в первую очередь.");
+                    break;
 
-        System.out.println("------------------------------------------------------------");
+                case 2:
+                    queue_2.offer(name);
+                    System.out.println("Покупатель " + name + " встал во вторую очередь.");
+                    break;
+            }
+        }
+    }
+
+    public static void removeBuyer(Queue<String> queue_1, Queue<String> queue_2) {
+        int selectRandomQueue = 1 + (int) (Math.random() * 2);
+        switch (selectRandomQueue) {
+            case 1:
+                    queue_1.poll();
+                    System.out.println("Покупатель ушел из кассы №1.");
+                    break;
+
+            case 2:
+                    queue_2.poll();
+                    System.out.println("Покупатель ушел из кассы №2.");
+                    break;
+        }
+    }
+
+    private static void addRandomBuyer(Queue<String> queue) {
+        int size = 1 + (int) (Math.random() * 5);
+        for (int i = 0; i < size; i++) {
+            int index = (int) (Math.random() * buyers.size());
+            queue.offer(buyers.get(index));
+        }
     }
 }
